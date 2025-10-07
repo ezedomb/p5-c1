@@ -3,68 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D-blog - About Us</title>
+    <title>Avery 5160 Label Maker – Workflow &amp; Tips</title>
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <style>
+        :root {
+            font-size: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-          margin: 0;
-          font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+            background: #f7f9fc;
+            color: #243b53;
         }
-        
+
         .topnav {
-          overflow: hidden;
-          background-color: #333;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem clamp(1.5rem, 5vw, 3rem);
+            background-color: #1f2933;
+            color: #f2f2f2;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.25);
         }
-        
+
         .topnav a {
-          float: left;
-          color: #f2f2f2;
-          text-align: center;
-          padding: 14px 16px;
-          text-decoration: none;
-          font-size: 17px;
+            color: inherit;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
-        
-        .topnav a:hover {
-          background-color: #ddd;
-          color: black;
+
+        .topnav a:hover,
+        .topnav a:focus-visible {
+            outline: none;
+            background-color: #e0f2ff;
+            color: #1f2933;
         }
-        
+
         .topnav a.active {
-          background-color: #4CAF50;
-          color: white;
+            background-color: #35a15c;
+            color: #fff;
         }
-        </style>
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: clamp(1.5rem, 3vw, 3rem);
+            display: grid;
+            gap: 2.5rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 3.5vw, 2.75rem);
+            color: #17344f;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #102a43;
+            font-size: clamp(1.4rem, 2.4vw, 1.75rem);
+        }
+
+        p {
+            line-height: 1.7;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            padding: clamp(1.5rem, 3vw, 2.5rem);
+            box-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.35);
+        }
+
+        .steps {
+            counter-reset: step;
+            display: grid;
+            gap: 1.75rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .steps li {
+            counter-increment: step;
+            position: relative;
+            padding-left: 3.5rem;
+        }
+
+        .steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: #35a15c;
+            color: #fff;
+            font-weight: 700;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 10px 24px -16px rgba(53, 161, 92, 0.95);
+        }
+
+        .tips {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .tips h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+            color: #17344f;
+        }
+
+        .tips p {
+            margin: 0;
+        }
+
+        .checklist {
+            display: grid;
+            gap: 0.75rem;
+            margin: 0;
+            padding-left: 1.2rem;
+        }
+
+        .checklist li {
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 0 0 3rem;
+            color: #7b8794;
+            font-size: 0.85rem;
+        }
+
+        a.cta-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.4rem;
+            background: #35a15c;
+            color: #fff;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+
+        a.cta-link:hover,
+        a.cta-link:focus-visible {
+            background: #2f8d50;
+        }
+
+        @media (max-width: 640px) {
+            .topnav {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .steps li {
+                padding-left: 3rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <nav class="topnav">
+        <span style="font-weight: 700; font-size: 1.1rem; letter-spacing: 0.03em;">Avery 5160 Label Maker</span>
+        <a href="index.html">Generator</a>
+        <a class="active" href="aboutus.html">Workflow &amp; Tips</a>
+    </nav>
 
-    <div class="topnav">
-        <a href="index.html">Home</a>
-        <a class="active"href="#about">About</a>
-      </div>
-      
-      <div style="padding-left:16px">
-        <h2>About us</h2>
-        <ul>
-          <li>lista</li>
-          <li>des</li>
-          <li>or</li>
-          <li>de</li>
-          <li>na</li>
-          <li>da</li>
-        </ul>
-        <br>
-        <ol>
-          <li>Lista</li>
-          <li>Nu</li>
-          <li>me</li>
-          <li>ra</li>
-          <li>da</li>
-        </ol>
-      </div>
-<!-- Si no llegaste a leer esto, es porque no llegaste-->    
+    <main>
+        <section>
+            <h1>Workflow &amp; Best Practices</h1>
+            <p>Whether you are preparing holiday mailers or shipping kits for an event, this companion guide walks you through the end-to-end process of transforming spreadsheet data into ready-to-print Avery 5160 labels using the generator.</p>
+            <a class="cta-link" href="index.html">Launch the label generator</a>
+        </section>
+
+        <section class="card">
+            <h2>Plan your data pipeline</h2>
+            <ol class="steps">
+                <li>
+                    <strong>Collect addresses in a shared spreadsheet.</strong> Choose a template that already includes headers for Name, Company, Address Line 1, Address Line 2, City, State, ZIP, and Country so collaborators can easily fill them in.
+                </li>
+                <li>
+                    <strong>Validate before export.</strong> Sort and filter the sheet to catch missing ZIP codes or duplicated recipients. It’s much easier to fix inconsistencies before converting to labels.
+                </li>
+                <li>
+                    <strong>Save as Excel.</strong> Download the final version as <code>.xlsx</code> (or <code>.xls</code>). The generator reads the first worksheet automatically.
+                </li>
+            </ol>
+        </section>
+
+        <section class="card">
+            <h2>Printing checklist</h2>
+            <ul class="checklist">
+                <li>Load Avery 5160 label sheets with the printable side up (check your printer’s feed direction).</li>
+                <li>After uploading in the generator, review the preview for long lines that might truncate and shorten text if needed.</li>
+                <li>Use your browser’s print dialog and set the scale to <strong>100%</strong> (or “Actual Size”) so the layout stays aligned with the labels.</li>
+                <li>Disable headers/footers in the print dialog for a clean finish.</li>
+                <li>Print a single test sheet on plain paper before using label stock and hold it against a blank label page to confirm alignment.</li>
+            </ul>
+        </section>
+
+        <section class="card tips">
+            <h2>Tips for larger mail merges</h2>
+            <div>
+                <h3>Batch your exports</h3>
+                <p>If you manage thousands of rows, split the spreadsheet into 200–300 row chunks. This keeps the browser responsive and generates manageable sets of printable sheets.</p>
+            </div>
+            <div>
+                <h3>Use filters to target segments</h3>
+                <p>Create filtered copies of your workbook (for example, by region or campaign) and upload only the rows that are relevant to the current label run.</p>
+            </div>
+            <div>
+                <h3>Archive your source file</h3>
+                <p>Store the exported workbook next to your mailing records so you can revisit or reprint labels later without rebuilding the sheet.</p>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Troubleshooting</h2>
+            <p>If the preview appears blank, confirm that your headers are in the first row and that each column contains data. The generator only displays lines with text to keep labels tidy.</p>
+            <p>For international mailings, the country line only appears when the country is something other than the United States. This matches USPS recommendations and leaves more room for addresses.</p>
+        </section>
+    </main>
+
+    <footer>
+        Need more help? Draft a quick test sheet with a handful of rows and experiment in the generator before committing to the full mailing list.
+    </footer>
 </body>
 </html>

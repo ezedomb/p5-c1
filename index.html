@@ -3,55 +3,634 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>D-blog</title>
+    <title>Avery 5160 Label Maker</title>
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <style>
+        :root {
+            color-scheme: light;
+            font-size: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-          margin: 0;
-          font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+            background: linear-gradient(180deg, #f5f7fa 0%, #fff 100%);
+            color: #1f2933;
         }
-        
+
         .topnav {
-          overflow: hidden;
-          background-color: #333;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem clamp(1.5rem, 5vw, 3rem);
+            background-color: #1f2933;
+            color: #f2f2f2;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.25);
         }
-        
+
         .topnav a {
-          float: left;
-          color: #f2f2f2;
-          text-align: center;
-          padding: 14px 16px;
-          text-decoration: none;
-          font-size: 17px;
+            color: inherit;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
-        
-        .topnav a:hover {
-          background-color: #ddd;
-          color: black;
+
+        .topnav a:hover,
+        .topnav a:focus-visible {
+            outline: none;
+            background-color: #e0f2ff;
+            color: #1f2933;
         }
-        
+
         .topnav a.active {
-          background-color: #4CAF50;
-          color: white;
+            background-color: #35a15c;
+            color: #fff;
         }
-        </style>
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: clamp(1.5rem, 2vw, 3rem) clamp(1.5rem, 5vw, 3rem) 4rem;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: clamp(2.2rem, 4vw, 3rem);
+            color: #17344f;
+        }
+
+        p.lead {
+            font-size: 1.1rem;
+            max-width: 68ch;
+            line-height: 1.6;
+        }
+
+        section {
+            margin-top: 2.5rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            padding: clamp(1.5rem, 3vw, 2.5rem);
+            box-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.35);
+        }
+
+        .upload-area {
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .upload-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .upload-controls label {
+            font-weight: 600;
+        }
+
+        input[type="file"] {
+            padding: 0.65rem 1rem;
+            border: 2px dashed #94a3b8;
+            border-radius: 12px;
+            background: #f8fafc;
+            font: inherit;
+            width: min(100%, 320px);
+        }
+
+        input[type="file"]:focus-visible {
+            outline: 3px solid rgba(53, 161, 92, 0.35);
+        }
+
+        button#print-button {
+            appearance: none;
+            border: none;
+            background: #35a15c;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.75rem 1.4rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        button#print-button:disabled {
+            background-color: #b5c4d6;
+            cursor: not-allowed;
+        }
+
+        button#print-button:not(:disabled):hover,
+        button#print-button:not(:disabled):focus-visible {
+            background: #2f8d50;
+        }
+
+        #upload-status {
+            font-size: 0.95rem;
+            color: #52606d;
+        }
+
+        .instructions-list {
+            counter-reset: step;
+            display: grid;
+            gap: 1rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .instructions-list li {
+            counter-increment: step;
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem 1.4rem;
+            box-shadow: 0 12px 32px -24px rgba(15, 23, 42, 0.45);
+            position: relative;
+        }
+
+        .instructions-list li::before {
+            content: counter(step);
+            position: absolute;
+            top: -18px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            background: #35a15c;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 50%;
+            box-shadow: 0 8px 20px -10px rgba(53, 161, 92, 0.8);
+        }
+
+        .sample-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            overflow-x: auto;
+        }
+
+        .sample-table th,
+        .sample-table td {
+            text-align: left;
+            padding: 0.65rem 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .sample-table thead {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: #1f2933;
+        }
+
+        .label-sheets {
+            display: grid;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .sheet-wrapper {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .sheet-title {
+            font-weight: 600;
+            color: #243b53;
+        }
+
+        .label-sheet {
+            width: 8.5in;
+            min-height: 10.5in;
+            background: #fff;
+            padding: 0.5in;
+            border-radius: 8px;
+            box-shadow: 0 18px 60px -35px rgba(15, 23, 42, 0.5);
+            border: 1px solid #e5e7eb;
+            margin: 0 auto;
+        }
+
+        .labels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.25in;
+            row-gap: 0.15in;
+        }
+
+        .label {
+            width: 2.625in;
+            height: 1in;
+            padding: 0.15in 0.2in;
+            border: 1px dashed rgba(148, 163, 184, 0.7);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            font-size: 11pt;
+            line-height: 1.2;
+            color: #102a43;
+            background: #fff;
+        }
+
+        .label p {
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: #7b8794;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 900px) {
+            .label-sheet {
+                transform: scale(0.8);
+                transform-origin: top center;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .label-sheet {
+                transform: scale(0.7);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .topnav {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            input[type="file"] {
+                width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                margin: 0;
+            }
+
+            .topnav,
+            .controls,
+            footer,
+            .sheet-title,
+            #intro,
+            #instructions-section,
+            #sample-section {
+                display: none !important;
+            }
+
+            main {
+                max-width: unset;
+                padding: 0;
+            }
+
+            .label-sheet {
+                box-shadow: none;
+                border: none;
+                margin: 0 auto;
+                padding: 0.5in;
+                page-break-after: always;
+            }
+
+            .label {
+                border: none;
+            }
+        }
+    </style>
 </head>
 <body>
+    <nav class="topnav">
+        <span style="font-weight: 700; font-size: 1.1rem; letter-spacing: 0.03em;">Avery 5160 Label Maker</span>
+        <a class="active" href="index.html">Generator</a>
+        <a href="aboutus.html">Workflow &amp; Tips</a>
+    </nav>
 
-    <div class="topnav">
-        <a class="active" href="#home">Home</a>
-        <a href="aboutus.html">About</a>
-      </div>
-      
-      <div style="padding-left:16px">
-        <h2>D-blog</h2>
-        <a href="https://www.google.com/search?safe=off&sxsrf=ALeKk01rswQap9LEu_ymCynTsOwTyTJcUQ:1608086596174&source=univ&tbm=isch&q=doge+meme+2020"> <img src="https://i2.wp.com/i.pinimg.com/originals/11/27/c7/1127c7b1a077d0def637ae9f07bb998b.png" alt="Doge Meme" style="margin: 5%;"></a>
+    <main>
+        <header id="intro">
+            <h1>Create Printable Avery 5160 Labels</h1>
+            <p class="lead">Upload an Excel workbook and instantly arrange your addresses into perfectly sized Avery 5160 labels (3 × 10 per sheet). The layout below is optimized for printing—just click <strong>Print Labels</strong> once you are happy with the preview.</p>
+        </header>
 
-        <p>Doge is an Internet meme that became popular in 2013. The meme typically consists of a picture of a <a href="https://en.wikipedia.org/wiki/Shiba_Inu">Shiba Inu dog</a> accompanied by multicolored text in <a href="https://en.wikipedia.org/wiki/Comic_Sans">Comic Sans font</a> in the foreground. The text, representing a kind of internal monologue, is deliberately written in a form of broken English.</p>
-      </div>
-    
+        <section class="card controls">
+            <div class="upload-area">
+                <div class="upload-controls">
+                    <label for="file-input">1. Choose your address list (.xls or .xlsx)</label>
+                    <input id="file-input" type="file" accept=".xls,.xlsx">
+                    <button id="print-button" type="button" disabled>Print labels</button>
+                </div>
+                <div id="upload-status">No file uploaded yet.</div>
+            </div>
+        </section>
+
+        <section id="instructions-section">
+            <h2>Prepare your spreadsheet in three easy steps</h2>
+            <ol class="instructions-list">
+                <li>
+                    <strong>Organize your columns.</strong> Add headers such as <em>Name</em>, <em>Company</em>, <em>Address Line 1</em>, <em>Address Line 2</em>, <em>City</em>, <em>State</em>, <em>ZIP</em>, and <em>Country</em>. Only the columns you fill will be used on the labels.
+                </li>
+                <li>
+                    <strong>Keep one household per row.</strong> Each row becomes one label. If you have more than 30 rows, the generator automatically creates additional sheets.
+                </li>
+                <li>
+                    <strong>Export to Excel format.</strong> Save your file as <code>.xlsx</code> or <code>.xls</code> (most spreadsheet apps have an <em>Export</em> or <em>Download</em> option). Then upload the file above.
+                </li>
+            </ol>
+        </section>
+
+        <section id="sample-section" class="card">
+            <h2>Example worksheet</h2>
+            <p>Here’s a sample of how your data might look before you upload it:</p>
+            <div style="overflow-x: auto;">
+                <table class="sample-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Address Line 1</th>
+                            <th>Address Line 2</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>ZIP</th>
+                            <th>Country</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jordan Carter</td>
+                            <td>Carter &amp; Co.</td>
+                            <td>123 Market Street</td>
+                            <td>Suite 400</td>
+                            <td>Portland</td>
+                            <td>OR</td>
+                            <td>97201</td>
+                            <td>USA</td>
+                        </tr>
+                        <tr>
+                            <td>Alexandra Reyes</td>
+                            <td></td>
+                            <td>87 Winding Brook Drive</td>
+                            <td></td>
+                            <td>Austin</td>
+                            <td>TX</td>
+                            <td>78701</td>
+                            <td>USA</td>
+                        </tr>
+                        <tr>
+                            <td>Taylor Singh</td>
+                            <td>Singh Studio</td>
+                            <td>44 Garden Way</td>
+                            <td>Unit B</td>
+                            <td>Toronto</td>
+                            <td>ON</td>
+                            <td>M4C 1B5</td>
+                            <td>Canada</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>Label preview</h2>
+            <div id="label-sheets" class="label-sheets" aria-live="polite"></div>
+        </section>
+
+        <footer>
+            Avery® and all related marks are trademarks of CCL Industries Inc. or its affiliates. This tool is provided for personal use only.
+        </footer>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" integrity="sha512-SvMXW0fvkYlCYwH14r2raXIiQunlslqY5T2r8j04YfGLmRoTSesxNUFDXL9uBeb5GsyhQOdE31x4n4t4WRPcsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        (function () {
+            const fileInput = document.getElementById('file-input');
+            const printButton = document.getElementById('print-button');
+            const statusElement = document.getElementById('upload-status');
+            const sheetsContainer = document.getElementById('label-sheets');
+
+            fileInput.addEventListener('change', handleFileSelection);
+            printButton.addEventListener('click', () => window.print());
+
+            function handleFileSelection(event) {
+                const file = event.target.files && event.target.files[0];
+
+                resetView();
+
+                if (!file) {
+                    statusElement.textContent = 'No file uploaded yet.';
+                    return;
+                }
+
+                const nameParts = file.name.split('.');
+                const extension = nameParts.length > 1 ? nameParts.pop().toLowerCase() : '';
+                if (!['xls', 'xlsx'].includes(extension)) {
+                    statusElement.textContent = 'Unsupported file type. Please upload an .xls or .xlsx workbook.';
+                    return;
+                }
+
+                statusElement.textContent = 'Processing workbook…';
+
+                const reader = new FileReader();
+                reader.onload = (loadEvent) => {
+                    try {
+                        const data = new Uint8Array(loadEvent.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+
+                        if (!workbook.SheetNames.length) {
+                            statusElement.textContent = 'No sheets were found in this workbook.';
+                            return;
+                        }
+
+                        const firstSheet = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheet];
+                        const rows = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+
+                        if (!rows.length) {
+                            statusElement.textContent = 'The selected sheet is empty. Add some rows and try again.';
+                            return;
+                        }
+
+                        const labels = rows
+                            .map((row) => createLabelLines(row))
+                            .filter((lines) => lines.length > 0);
+
+                        if (!labels.length) {
+                            statusElement.textContent = 'No readable address data was found. Make sure your columns have headers such as Name, Address, City, State, and ZIP.';
+                            return;
+                        }
+
+                        renderLabelSheets(labels);
+                        const sheetCount = Math.ceil(labels.length / 30);
+                        statusElement.textContent = `Loaded ${labels.length} label${labels.length === 1 ? '' : 's'} from "${file.name}" → ${sheetCount} sheet${sheetCount === 1 ? '' : 's'} ready to print.`;
+                        printButton.disabled = false;
+                    } catch (error) {
+                        console.error(error);
+                        statusElement.textContent = 'We could not read that workbook. Please verify the file and try again.';
+                    }
+                };
+
+                reader.onerror = () => {
+                    statusElement.textContent = 'There was a problem opening the file. Please try again.';
+                };
+
+                reader.readAsArrayBuffer(file);
+            }
+
+            function resetView() {
+                sheetsContainer.innerHTML = '';
+                printButton.disabled = true;
+            }
+
+            function createLabelLines(row) {
+                const normalised = {};
+                Object.keys(row).forEach((key) => {
+                    if (!key) return;
+                    normalised[key.trim().toLowerCase()] = String(row[key]).trim();
+                });
+
+                const getValue = (aliases) => {
+                    for (const alias of aliases) {
+                        if (normalised[alias]) {
+                            return normalised[alias];
+                        }
+                    }
+                    return '';
+                };
+
+                const name = getValue(['name', 'full name', 'recipient']);
+                const company = getValue(['company', 'organisation', 'organization', 'business']);
+                const address1 = getValue([
+                    'address1',
+                    'address 1',
+                    'address line 1',
+                    'street',
+                    'street address',
+                    'address'
+                ]);
+                const address2 = getValue([
+                    'address2',
+                    'address 2',
+                    'address line 2',
+                    'suite',
+                    'unit',
+                    'apt',
+                    'apartment'
+                ]);
+                const city = getValue(['city', 'town']);
+                const state = getValue(['state', 'province', 'region']);
+                const postal = getValue(['zip', 'zip code', 'zipcode', 'postal code', 'postcode', 'post code']);
+                const country = getValue(['country']);
+
+                const lines = [];
+                if (name) lines.push(name);
+                if (company && company !== name) lines.push(company);
+                if (address1) lines.push(address1);
+                if (address2) lines.push(address2);
+
+                const cityStateZip = buildCityStatePostal(city, state, postal);
+                if (cityStateZip) lines.push(cityStateZip);
+                if (country && country.toLowerCase() !== 'usa' && country.toLowerCase() !== 'united states') {
+                    lines.push(country);
+                }
+
+                if (!lines.length) {
+                    const fallback = Object.values(row)
+                        .map((value) => String(value).trim())
+                        .filter(Boolean);
+                    return fallback.slice(0, 6);
+                }
+
+                return lines;
+            }
+
+            function buildCityStatePostal(city, state, postal) {
+                const parts = [];
+                if (city) parts.push(city);
+                if (state) {
+                    if (city) {
+                        parts[parts.length - 1] = `${parts[parts.length - 1]}, ${state}`;
+                    } else {
+                        parts.push(state);
+                    }
+                }
+
+                if (postal) {
+                    if (parts.length) {
+                        const last = parts.pop();
+                        parts.push(`${last} ${postal}`.trim());
+                    } else {
+                        parts.push(postal);
+                    }
+                }
+
+                return parts.join(' ').trim();
+            }
+
+            function renderLabelSheets(labels) {
+                sheetsContainer.innerHTML = '';
+
+                const chunkSize = 30;
+                const totalSheets = Math.ceil(labels.length / chunkSize) || 1;
+
+                for (let sheetIndex = 0; sheetIndex < totalSheets; sheetIndex += 1) {
+                    const sheetLabels = labels.slice(sheetIndex * chunkSize, (sheetIndex + 1) * chunkSize);
+                    const sheetWrapper = document.createElement('div');
+                    sheetWrapper.className = 'sheet-wrapper';
+
+                    const title = document.createElement('div');
+                    title.className = 'sheet-title';
+                    title.textContent = `Sheet ${sheetIndex + 1}`;
+                    sheetWrapper.appendChild(title);
+
+                    const sheet = document.createElement('section');
+                    sheet.className = 'label-sheet';
+
+                    const grid = document.createElement('div');
+                    grid.className = 'labels-grid';
+
+                    for (let index = 0; index < chunkSize; index += 1) {
+                        const label = document.createElement('div');
+                        label.className = 'label';
+                        const labelData = sheetLabels[index];
+
+                        if (labelData) {
+                            labelData.forEach((line) => {
+                                const paragraph = document.createElement('p');
+                                paragraph.textContent = line;
+                                label.appendChild(paragraph);
+                            });
+                        }
+
+                        grid.appendChild(label);
+                    }
+
+                    sheet.appendChild(grid);
+                    sheetWrapper.appendChild(sheet);
+                    sheetsContainer.appendChild(sheetWrapper);
+                }
+            }
+        })();
+    </script>
 </body>
 </html>
